@@ -120,11 +120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invader: {fileID: 114523719403423132, guid: ec108dbe411f7874291d4c75e0bed9d3, type: 2}
   height: 6
-  width: 18
+  width: 11
   distanceBetween: 0.9
   elPos: 3
   MovementPause: 1
-  PercentageToMove: 2
+  PercentageToMove: 1
 --- !u!4 &129927255
 Transform:
   m_ObjectHideFlags: 0
@@ -221,6 +221,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1056966540 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1604837770111278, guid: ec108dbe411f7874291d4c75e0bed9d3,
+    type: 2}
+  m_PrefabInternal: {fileID: 928721917}
+--- !u!61 &1056966541
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1056966540}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0.002632141, y: 0.005262375}
+  serializedVersion: 2
+  m_Size: {x: 0.4558115, y: 0.34529856}
 --- !u!1 &2144781822
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ namespace Game.Grid {
         float movementTime = .1f;
         public int PercentageToMove;
         GameObject gridContainer;
-        bool goingRight;
+        bool goingRight = true;
 
 		void Start () {
             elements = new IGridElement[height, width];
@@ -39,12 +39,101 @@ namespace Game.Grid {
                     enemy.name = invader.gameObject.name + '[' + i + ", " + j + ']';
                     enemy.transform.parent = gridContainer.transform;
                     elements[i, j] = enemy.GetComponent<IGridElement>();
+                    elements[i, j].SetGrid(this);
                 }
                 spawnPos.y -= distanceBetween;
             }
             
         }
 
+        public int[] GetCords(IGridElement el)
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    if (elements[i, j] == el)
+                        return new int[] { i, j };
+                }
+            }
+            return new int[0];
+        }
+
+        public IGridElement GetRandomLastElement()
+        {
+            IGridElement elem = null;
+            while(elem == null)
+            {
+                int xCord = Random.Range(0, width);
+                for (int i = 0; i < height; i++)
+                {
+                    if (elements[i, xCord].isActive())
+                        elem = elements[i, xCord];
+                }
+                if(elem == null)
+                {
+                    bool active = false;
+                    foreach(IGridElement el in elements)
+                    {
+                        if (el.isActive())
+                            active = true;
+                    }
+                    if (!active)
+                    {
+                        Debug.Log("There are no more active elements in the grid");
+                        break;
+                    }
+                }
+            }
+            return elem;
+        }
+
+        public void DestroyShip(IGridElement el)
+        {
+            int[] shipCords = GetCords(el);
+            int colorType = el.getColorType();
+            int comboMultiplier = 0, lastCombo = 1;
+
+            foreach(IGridElement elem in getAdjacentElements(shipCords[0], shipCords[1]))
+            {
+                if (elem != null && elem.getColorType() == colorType && elem.getGameobject().activeInHierarchy)
+                    elem.ChainDestroy();
+
+                int temp = comboMultiplier;
+                comboMultiplier = lastCombo;
+                lastCombo = temp + lastCombo;
+            }
+        }
+
+        private IGridElement[] getAdjacentElements(int shipX, int shipY)
+        {
+            IGridElement[] els = new IGridElement[4];
+
+            if (shipX > 0)
+                els[0] = elements[shipX - 1, shipY];
+
+            if (shipX < width - 1)
+                els[1] = elements[shipX + 1, shipY];
+
+            if (shipY > 0)
+                els[2] = elements[shipX, shipY - 1];
+
+            if (shipY < height - 1)
+                els[3] = elements[shipX, shipY + 1];
+
+            return els;
+        }
+
+        private bool ChainDestroy(int shipX, int shipY, int colorType)
+        {
+            if (elements[shipX, shipY].getColorType() == colorType && elements[shipX, shipY].getGameobject().activeInHierarchy)
+            {
+                elements[shipX, shipY].ChainDestroy();
+                return true;
+            }
+            return false;
+        }
+        IGridElement element;
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.H))
@@ -53,35 +142,22 @@ namespace Game.Grid {
                 FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(elPos).getPosition()).x, Screen.width);
             else if (Input.GetKeyDown(KeyCode.J))
                 print(PercentageToFloat(PercentageToMove, Screen.width));
-
-                if (movementTime > MovementPause)
+            else if (Input.GetKeyDown(KeyCode.Y))
             {
-                movementTime = 0;
-                Vector3 vectorMovement;
-                if (goingRight && FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Right).getPosition()).x, Screen.width) < 95)
-                    vectorMovement = new Vector3(PercentageToFloat(PercentageToMove, Screen.width), 0);
-                else if (!goingRight && FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Left).getPosition()).x, Screen.width) > 5)
-                    vectorMovement = new Vector3(PercentageToFloat(PercentageToMove, Screen.width) * -1, 0);
-                else
-                {
-                    vectorMovement = new Vector3(0, -(PercentageToFloat(PercentageToMove, Screen.width)));
-                    goingRight = !goingRight;
-                }
-
-                gridContainer.transform.position = Camera.main.ScreenToWorldPoint(
-                    Camera.main.WorldToScreenPoint(gridContainer.transform.position) +
-                    vectorMovement);
+                if (element != null)
+                    element.getGameobject().SetActive(false);
+                element = GetRandomLastElement();
+                element.getGameobject().GetComponent<SpriteRenderer>().color = Color.white;
             }
-            else
-                movementTime += GameManager.DeltaTime;
+
+                MoveGrid();
         }
 
         private IGridElement getBorderElement(ElementPosition pos)
         {
-            int deepElement = 0;
             int[] deepValue = new int[2];
             if (pos == ElementPosition.Left || pos == ElementPosition.Top)
-                deepElement = (pos == ElementPosition.Top ? height : width);
+                deepValue = (pos == ElementPosition.Top ? new int[2] { height, 0 } : new int[2] { 0, width });
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
@@ -114,7 +190,37 @@ namespace Game.Grid {
                 }
                 
             }
+            print("[" + deepValue[0] + ", " + deepValue[1] + ']');
             return elements[deepValue[0], deepValue[1]];
+        }
+
+        private void MoveGrid()
+        {
+            if (movementTime > MovementPause)
+            {
+                movementTime = 0;
+                Vector3 vectorMovement;
+                if (goingRight && FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Right).getPosition()).x, Screen.width) < 97)
+                    vectorMovement = new Vector3(PercentageToFloat(PercentageToMove, Screen.width), 0);
+                else if (!goingRight && FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Left).getPosition()).x, Screen.width) > 3)
+                    vectorMovement = new Vector3(PercentageToFloat(PercentageToMove, Screen.width) * -1, 0);
+                else
+                {
+                    vectorMovement = new Vector3(0, -(PercentageToFloat(PercentageToMove, Screen.width)));
+                    goingRight = !goingRight;
+                    MovementPause -= (MovementPause / 10);
+                }
+
+                gridContainer.transform.position = Camera.main.ScreenToWorldPoint(
+                    Camera.main.WorldToScreenPoint(gridContainer.transform.position) +
+                    vectorMovement);
+                foreach(IGridElement el in elements)
+                {
+                    el.ExecuteMovement();
+                }
+            }
+            else
+                movementTime += GameManager.DeltaTime;
         }
 
         void CalculateDistance()
@@ -145,7 +251,7 @@ namespace Game.Grid {
             else if (percentageCompleted > 100) percentageCompleted = 100;
 
             string percentage = percentageCompleted + "%";
-            print(percentage);
+            //print(percentage);
             return percentageCompleted;
         }
 

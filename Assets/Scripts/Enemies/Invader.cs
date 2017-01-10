@@ -6,15 +6,19 @@ using Game.Grid;
 //By @JavierBullrich
 
 namespace Game.Enemies {
+    [RequireComponent(typeof(BoxCollider2D))]
 	public class Invader : MonoBehaviour, IGridElement {
 
         public Color[] colors;
 
         SpriteRenderer spr;
-        Animator anim;
         [SerializeField]
         public AnimationSystem anims;
         bool movement;
+        GridSystem grid;
+        int colorType;
+
+        public bool testBool;
 
         private void Awake()
         {
@@ -29,6 +33,7 @@ namespace Game.Enemies {
                 GetComponent<SpriteRenderer>();
             return spr.sprite.rect.width;
         }
+
         #region Interface Functions
         public bool isActive()
         {
@@ -41,6 +46,22 @@ namespace Game.Enemies {
         public GameObject getGameobject()
         {
             return gameObject;
+        }
+        public void ExecuteMovement()
+        {
+            MovementAnim();
+        }
+        public void SetGrid(GridSystem gr)
+        {
+            grid = gr;
+        }
+        public int getColorType()
+        {
+            return colorType;
+        }
+        public void ChainDestroy()
+        {
+            gameObject.SetActive(false);
         }
         #endregion
 
@@ -61,21 +82,29 @@ namespace Game.Enemies {
 
         public Color RandomColor()
         {
-            int colorIndex = Random.Range(0, colors.Length);
-            return getColor(colorIndex);
-
+            colorType = Random.Range(0, colors.Length);
+            return getColor(colorType);
         }
 
-		void Start () {
-            //print(getSpriteWidth());
-		}
+        void Destroy()
+        {
+            grid.DestroyShip(this);
+            gameObject.SetActive(false);
+        }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.L))
                 MovementAnim();
+
+            if (testBool)
+            {
+                testBool = false;
+                Destroy();
+            }
         }
     }
+
     [System.Serializable]
     public class ColorSystem
     {

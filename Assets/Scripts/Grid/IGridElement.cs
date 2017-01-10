@@ -9,5 +9,9 @@ namespace Game.Grid {
         bool isActive();
         Vector2 getPosition();
         GameObject getGameobject();
+        void ExecuteMovement();
+        void SetGrid(GridSystem gr);
+        int getColorType();
+        void ChainDestroy();
     }
 }
