@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Animation;
 using Game.Grid;
+using Game.Interface;
 //By @JavierBullrich
 
 namespace Game.Enemies {
     [RequireComponent(typeof(BoxCollider2D))]
-	public class Invader : MonoBehaviour, IGridElement {
+	public class Invader : MonoBehaviour, IGridElement, IDamagable {
 
         public Color[] colors;
 
         SpriteRenderer spr;
         [SerializeField]
         public AnimationSystem anims;
-        bool movement;
+        bool movement, alive;
         GridSystem grid;
         int colorType;
 
@@ -23,8 +24,14 @@ namespace Game.Enemies {
         private void Awake()
         {
             spr = GetComponent<SpriteRenderer>();
-            spr.color = RandomColor();
             anims.SetUp(GetComponent<SpriteRenderer>());
+            SetUp();
+        }
+
+        void SetUp()
+        {
+            alive = true;
+            spr.color = RandomColor();
         }
 
         public float getSpriteWidth()
@@ -61,17 +68,20 @@ namespace Game.Enemies {
         }
         public void ChainDestroy()
         {
-            gameObject.SetActive(false);
+            StartCoroutine(DestroyAnimation());
         }
         #endregion
 
         public void MovementAnim()
         {
-            string currAnim = "Default";
-            if(anims.GetCurrentAnim() == (currAnim + (movement ? 1 : 0)))
+            if (alive)
             {
-                movement = !movement;
-                anims.ChangeSprite(currAnim + (movement ? 1 : 0));
+                string currAnim = "Default";
+                if (anims.GetCurrentAnim() == (currAnim + (movement ? 1 : 0)))
+                {
+                    movement = !movement;
+                    anims.ChangeSprite(currAnim + (movement ? 1 : 0));
+                }
             }
         }
 
@@ -80,16 +90,24 @@ namespace Game.Enemies {
             return colors[colorIndex];
         }
 
+        IEnumerator DestroyAnimation()
+        {
+            alive = false;
+            anims.ChangeSprite("Destroy");
+            yield return new WaitForSeconds(0.2f);
+            gameObject.SetActive(false);
+        }
+
         public Color RandomColor()
         {
             colorType = Random.Range(0, colors.Length);
             return getColor(colorType);
         }
 
-        void Destroy()
+        public void Destroy()
         {
             grid.DestroyShip(this);
-            gameObject.SetActive(false);
+            StartCoroutine(DestroyAnimation());
         }
 
         private void Update()
@@ -102,6 +120,11 @@ namespace Game.Enemies {
                 testBool = false;
                 Destroy();
             }
+        }
+
+        public void ReceiveDamage()
+        {
+            Destroy();
         }
     }
 

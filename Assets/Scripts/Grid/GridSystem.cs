@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Game.Enemies;
+using Game.Manager;
+using Game.Systems;
 //By @JavierBullrich
 
 namespace Game.Grid {
@@ -17,9 +19,12 @@ namespace Game.Grid {
         public int PercentageToMove;
         GameObject gridContainer;
         bool goingRight = true;
+        SystemCalculations calcs;
+        int moves;
 
 		void Start () {
             elements = new IGridElement[height, width];
+            calcs = new SystemCalculations();
             PopulateGrid();
 		}
 
@@ -105,21 +110,23 @@ namespace Game.Grid {
             }
         }
 
-        private IGridElement[] getAdjacentElements(int shipX, int shipY)
+        private IGridElement[] getAdjacentElements(int shipY, int shipX)
         {
             IGridElement[] els = new IGridElement[4];
 
-            if (shipX > 0)
-                els[0] = elements[shipX - 1, shipY];
-
-            if (shipX < width - 1)
-                els[1] = elements[shipX + 1, shipY];
-
             if (shipY > 0)
-                els[2] = elements[shipX, shipY - 1];
+                els[0] = elements[shipY - 1, shipX];
 
             if (shipY < height - 1)
-                els[3] = elements[shipX, shipY + 1];
+            {
+                els[1] = elements[shipY + 1, shipX];
+            }
+
+            if (shipX > 0)
+                els[2] = elements[shipY, shipX - 1];
+
+            if (shipX < width - 1)
+                els[3] = elements[shipY, shipX + 1];
 
             return els;
         }
@@ -139,9 +146,9 @@ namespace Game.Grid {
             if (Input.GetKeyDown(KeyCode.H))
                 print(getBorderElement(elPos).getPosition() + " " + getBorderElement(elPos).getGameobject());
             else if (Input.GetKeyDown(KeyCode.G))
-                FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(elPos).getPosition()).x, Screen.width);
+                calcs.FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(elPos).getPosition()).x, Screen.width);
             else if (Input.GetKeyDown(KeyCode.J))
-                print(PercentageToFloat(PercentageToMove, Screen.width));
+                print(calcs.PercentageToFloat(PercentageToMove, Screen.width));
             else if (Input.GetKeyDown(KeyCode.Y))
             {
                 if (element != null)
@@ -200,13 +207,13 @@ namespace Game.Grid {
             {
                 movementTime = 0;
                 Vector3 vectorMovement;
-                if (goingRight && FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Right).getPosition()).x, Screen.width) < 97)
-                    vectorMovement = new Vector3(PercentageToFloat(PercentageToMove, Screen.width), 0);
-                else if (!goingRight && FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Left).getPosition()).x, Screen.width) > 3)
-                    vectorMovement = new Vector3(PercentageToFloat(PercentageToMove, Screen.width) * -1, 0);
+                if (goingRight && calcs.FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Right).getPosition()).x, Screen.width) < 97)
+                    vectorMovement = new Vector3(calcs.PercentageToFloat(PercentageToMove, Screen.width), 0);
+                else if (!goingRight && calcs.FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Left).getPosition()).x, Screen.width) > 3)
+                    vectorMovement = new Vector3(calcs.PercentageToFloat(PercentageToMove, Screen.width) * -1, 0);
                 else
                 {
-                    vectorMovement = new Vector3(0, -(PercentageToFloat(PercentageToMove, Screen.width)));
+                    vectorMovement = new Vector3(0, -(calcs.PercentageToFloat(PercentageToMove, Screen.width)));
                     goingRight = !goingRight;
                     MovementPause -= (MovementPause / 10);
                 }
@@ -218,47 +225,27 @@ namespace Game.Grid {
                 {
                     el.ExecuteMovement();
                 }
+
+                FireToPlayer();
             }
             else
                 movementTime += GameManager.DeltaTime;
         }
 
-        void CalculateDistance()
+        void FireToPlayer()
         {
-            IGridElement elementRight = getBorderElement(ElementPosition.Right);
-            IGridElement elementLeft = getBorderElement(ElementPosition.Left);
-
-            Camera cam = Camera.main;
-            float cheight = 2f * cam.orthographicSize;
-            float cwidth = cheight * cam.aspect;
-            print(Screen.width + " | " + Screen.height);
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(elementRight.getPosition());
-            Debug.Log(elementRight.getPosition() + " target is " + screenPos.x + " pixels from the left");
-
-
-        }
-
-        /// <summary>Return an int giving the percentage of numPos between 0 and Max </summary>
-        int FloatToPercentage(float numPos, float Max)
-        {
-            float HundredPercent = Max;
-            float actualPoint = HundredPercent - numPos;
-            float distance = HundredPercent - actualPoint;
-            float limit = (distance / HundredPercent) * 100;
-            int percentageCompleted = (int)limit;
-
-            if (percentageCompleted < 0) percentageCompleted = 0;
-            else if (percentageCompleted > 100) percentageCompleted = 100;
-
-            string percentage = percentageCompleted + "%";
-            //print(percentage);
-            return percentageCompleted;
-        }
-
-        float PercentageToFloat(int percentage, float Max)
-        {
-            float result = (Max / 100) * percentage;
-            return result;
+            if (moves > Random.Range(0, 3))
+            {
+                moves = 0;
+                GameObject bullet = GameManager.instance.returnPooledObject("EnemyBullet");
+                if (bullet != null)
+                {
+                    bullet.transform.position = GetRandomLastElement().getPosition();
+                    bullet.SetActive(true);
+                }
+            }
+            else
+                moves++;
         }
 
         public enum ElementPosition
