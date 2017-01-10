@@ -5,9 +5,16 @@ using UnityEngine;
 
 namespace Game {
 	public class GameManager : MonoBehaviour {
-
+        public static float DeltaTime;
+        public float time;
 		void Start () {
 			
 		}
-	}
+
+        private void Update()
+        {
+            DeltaTime = Time.deltaTime;
+            time = DeltaTime;
+        }
+    }
 }

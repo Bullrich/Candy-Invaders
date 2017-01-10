@@ -1,24 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Animation;
+using Game.Grid;
 //By @JavierBullrich
 
 namespace Game.Enemies {
-	public class Invader : MonoBehaviour {
-        public enum InvaderColor
-        {
-            Yellow,
-            Red,
-            Blue,
-            Green
-        }
-        public InvaderColor shipColor;
+	public class Invader : MonoBehaviour, IGridElement {
+
+        public Color[] colors;
+
         SpriteRenderer spr;
+        Animator anim;
+        [SerializeField]
+        public AnimationSystem anims;
+        bool movement;
 
         private void Awake()
         {
             spr = GetComponent<SpriteRenderer>();
-            spr.color = getColor();
+            spr.color = RandomColor();
+            anims.SetUp(GetComponent<SpriteRenderer>());
         }
 
         public float getSpriteWidth()
@@ -27,32 +29,62 @@ namespace Game.Enemies {
                 GetComponent<SpriteRenderer>();
             return spr.sprite.rect.width;
         }
-
-        Color getColor()
+        #region Interface Functions
+        public bool isActive()
         {
-            Color color = Color.white;
-            switch (shipColor)
+            return gameObject.activeInHierarchy;
+        }
+        public Vector2 getPosition()
+        {
+            return transform.position;
+        }
+        public GameObject getGameobject()
+        {
+            return gameObject;
+        }
+        #endregion
+
+        public void MovementAnim()
+        {
+            string currAnim = "Default";
+            if(anims.GetCurrentAnim() == (currAnim + (movement ? 1 : 0)))
             {
-                case InvaderColor.Yellow:
-                    color = Color.yellow;
-                    break;
-                case InvaderColor.Red:
-                    color = Color.red;
-                    break;
-                case InvaderColor.Blue:
-                    color = Color.blue;
-                    break;
-                case InvaderColor.Green:
-                    color = Color.green;
-                    break;
-                default:
-                    break;
+                movement = !movement;
+                anims.ChangeSprite(currAnim + (movement ? 1 : 0));
             }
-            return color;
+        }
+
+        Color getColor(int colorIndex)
+        {
+            return colors[colorIndex];
+        }
+
+        public Color RandomColor()
+        {
+            int colorIndex = Random.Range(0, colors.Length);
+            return getColor(colorIndex);
+
         }
 
 		void Start () {
             //print(getSpriteWidth());
 		}
-	}
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.L))
+                MovementAnim();
+        }
+    }
+    [System.Serializable]
+    public class ColorSystem
+    {
+        public Color red, blue, yellow, green;
+
+        public Color[] getColors()
+        {
+            Color[] colors = { red, blue, yellow, green };
+            return colors;
+        }
+    }
 }

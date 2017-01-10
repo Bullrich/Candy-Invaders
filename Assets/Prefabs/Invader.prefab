@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1604837770111278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.476232, y: 0.91903156, z: 0}
+  m_LocalPosition: {x: -13.695898, y: -2.7549648, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,7 +52,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3c71345f626a444a883fadb27fd61f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipColor: 1
+  colors:
+  - {r: 1, g: 0.14901961, b: 0, a: 1}
+  - {r: 0, g: 0.14509805, b: 1, a: 1}
+  - {r: 0, g: 0.99215686, b: 0.14901961, a: 1}
+  - {r: 0.8784314, g: 1, b: 0.1254902, a: 1}
+  anims:
+    animationData:
+    - animName: Default0
+      animSprite: {fileID: 21300000, guid: 464dc97aa616a834bb7717dff7f8342f, type: 3}
+    - animName: Default1
+      animSprite: {fileID: 21300002, guid: 464dc97aa616a834bb7717dff7f8342f, type: 3}
 --- !u!212 &212591550548465424
 SpriteRenderer:
   m_ObjectHideFlags: 1
