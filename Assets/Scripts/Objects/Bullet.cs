@@ -19,7 +19,7 @@ namespace Game.Obj {
         }
         public MoveDir moveDirection;
 
-        private void Update()
+        public virtual void Update()
         {
             Movement((moveDirection == MoveDir.Up ? Vector2.up : Vector2.down));
         }

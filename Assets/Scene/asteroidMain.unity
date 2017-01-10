@@ -120,10 +120,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   invader: {fileID: 114523719403423132, guid: ec108dbe411f7874291d4c75e0bed9d3, type: 2}
   height: 6
-  width: 11
+  width: 17
   distanceBetween: 0.9
   elPos: 3
-  MovementPause: 1
+  MovementPause: 0.9
   PercentageToMove: 1
 --- !u!4 &129927255
 Transform:
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 645910517}
   - component: {fileID: 645910516}
   - component: {fileID: 645910515}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,9 +179,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0013854206, y: -0.0055413246}
   serializedVersion: 2
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 0.29918784, y: 0.18558401}
 --- !u!212 &645910517
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 985529653}
   - component: {fileID: 985529652}
   - component: {fileID: 985529654}
+  - component: {fileID: 985529655}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -335,6 +336,25 @@ MonoBehaviour:
       type: 2}
     pooledAmount: 5
     willGrow: 0
+--- !u!114 &985529655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 985529651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ae70153ce018e4eb7f6012068e50dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fastInvader:
+  - {fileID: 8300000, guid: 47bd84e0d51891f4fb9c86e40272a5d7, type: 3}
+  - {fileID: 8300000, guid: 5d7add38361f32546b89140261d4762b, type: 3}
+  - {fileID: 8300000, guid: b31ef54472ce614439dae93e003218d3, type: 3}
+  - {fileID: 8300000, guid: fe8b69bdc023df34e8a397c703545dd9, type: 3}
+  explosion: {fileID: 8300000, guid: bb826e79e0bc00f4194c59bf9c20d878, type: 3}
+  invaderKilled: {fileID: 8300000, guid: c610767c25769a3489d93a5b59a46ab3, type: 3}
+  shoot: {fileID: 8300000, guid: 839941f923844d14eaf97a2d07f20a52, type: 3}
 --- !u!1 &2144781822
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ using Game.Interface;
 
 namespace Game.Player {
     [RequireComponent(typeof(BoxCollider2D))]
-	public class Player : MonoBehaviour {
+	public class Player : MonoBehaviour, IDamagable {
         public float speed;
         SystemCalculations calcs;
 

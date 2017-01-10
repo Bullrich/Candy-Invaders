@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 //By @JavierBullrich
 
-namespace Game.Manager {
+namespace Game.Manager
+{
     [RequireComponent(typeof(PoolManager))]
-	public class GameManager : MonoBehaviour {
+    [RequireComponent(typeof(SoundManager))]
+    public class GameManager : MonoBehaviour {
         public static float DeltaTime;
         PoolManager pool;
+        SoundManager sound;
         public static GameManager instance;
 
         private void Awake()
         {
             instance = this;
             pool = GetComponent<PoolManager>();
+            sound = GetComponent<SoundManager>();
         }
 
         public GameObject returnPooledObject(string pooledObj)
@@ -23,6 +27,11 @@ namespace Game.Manager {
         public GameObject returnPooledObject(object pooledObj)
         {
             return pool.GetPooledObject(pooledObj);
+        }
+
+        public SoundManager getSoundManager()
+        {
+            return sound;
         }
 
         private void Update()
