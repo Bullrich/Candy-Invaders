@@ -4,6 +4,7 @@ using UnityEngine;
 using Game.Enemies;
 using Game.Manager;
 using Game.Systems;
+using Game.Sfx;
 //By @JavierBullrich
 
 namespace Game.Grid {
@@ -21,10 +22,12 @@ namespace Game.Grid {
         bool goingRight = true;
         SystemCalculations calcs;
         int moves;
+        SoundPlayer sfxPlayer;
 
 		void Start () {
             elements = new IGridElement[height, width];
             calcs = new SystemCalculations();
+            sfxPlayer = GetComponent<SoundPlayer>();
             PopulateGrid();
 		}
 
@@ -216,6 +219,7 @@ namespace Game.Grid {
                     vectorMovement = new Vector3(0, -(calcs.PercentageToFloat(PercentageToMove, Screen.width)));
                     goingRight = !goingRight;
                     MovementPause -= (MovementPause / 10);
+                    sfxPlayer.ChangePitch(sfxPlayer.getPitch() + .1f);
                 }
 
                 gridContainer.transform.position = Camera.main.ScreenToWorldPoint(
@@ -227,6 +231,7 @@ namespace Game.Grid {
                 }
 
                 FireToPlayer();
+                sfxPlayer.PlaySFX(GameManager.instance.getSoundManager().getFastInvaderSound(1));
             }
             else
                 movementTime += GameManager.DeltaTime;

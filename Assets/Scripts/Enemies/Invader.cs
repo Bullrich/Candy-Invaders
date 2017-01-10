@@ -107,6 +107,7 @@ namespace Game.Enemies {
         public void Destroy()
         {
             grid.DestroyShip(this);
+            Manager.GameManager.instance.getSoundManager().PlaySFX((Manager.GameManager.instance.getSoundManager().getSfx(Manager.SoundManager.Sfx.invaderKilled)));
             StartCoroutine(DestroyAnimation());
         }
 

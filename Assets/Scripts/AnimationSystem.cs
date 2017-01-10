@@ -44,6 +44,11 @@ namespace Game.Animation {
         {
             spr.sprite = animationData[spIndex].animSprite;
         }
+
+        public int getAnimsLength()
+        {
+            return animationData.Length;
+        }
 	
             [System.Serializable]
             public struct AnimationData

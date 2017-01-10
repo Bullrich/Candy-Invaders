@@ -5,11 +5,18 @@ using UnityEngine;
 
 namespace Game.Manager
 {
+    [RequireComponent(typeof(AudioSource))]
     public class SoundManager : MonoBehaviour
     {
         [Header("Sound effects")]
         public AudioClip[] fastInvader;
         public AudioClip explosion, invaderKilled, shoot;
+        AudioSource aSource;
+
+        private void Start()
+        {
+            aSource = GetComponent<AudioSource>();
+        }
 
         public enum Sfx
         {
@@ -17,6 +24,12 @@ namespace Game.Manager
             fastInvader,
             invaderKilled
               ,shoot
+        }
+
+        public void PlaySFX(AudioClip sfx)
+        {
+            aSource.clip = sfx;
+            aSource.Play();
         }
 
         public AudioClip getSfx(Sfx option)
@@ -42,7 +55,7 @@ namespace Game.Manager
 
         public AudioClip getFastInvaderSound(int index)
         {
-            if (fastInvader.Length < index - 1)
+            if (fastInvader.Length > index - 1)
                 return fastInvader[index];
             else
                 return null;

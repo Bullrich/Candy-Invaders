@@ -5,29 +5,46 @@ using Game.Manager;
 using Game.Obj;
 using Game.Systems;
 using Game.Interface;
+using Game.Sfx;
 //By @JavierBullrich
 
-namespace Game.Player {
+namespace Game.Player
+{
     [RequireComponent(typeof(BoxCollider2D))]
-	public class Player : MonoBehaviour, IDamagable {
+    [RequireComponent(typeof(SoundPlayer))]
+    public class Player : MonoBehaviour, IDamagable {
         public float speed;
         SystemCalculations calcs;
+        SoundPlayer sfxPlayer;
+        Vector2 startPos;
 
 		void Start () {
             calcs = new SystemCalculations();
+            sfxPlayer = GetComponent<SoundPlayer>();
+            startPos = transform.position;
 		}
 
         private void Update()
         {
             InputHandler();
             if (Input.GetKeyDown(KeyCode.X))
+                Shoot();
+        }
+
+        public void Revive()
+        {
+            transform.position = startPos;
+            gameObject.SetActive(true);
+        }
+
+        void Shoot()
+        {
+            GameObject bullet = GameManager.instance.returnPooledObject(new PlayerBullet());
+            if (bullet != null)
             {
-                GameObject bullet = GameManager.instance.returnPooledObject(new PlayerBullet());
-                if (bullet != null)
-                {
-                    bullet.transform.position = transform.position;
-                    bullet.SetActive(true);
-                }
+                bullet.transform.position = transform.position;
+                bullet.SetActive(true);
+                sfxPlayer.PlaySFX(GameManager.instance.getSoundManager().getSfx(SoundManager.Sfx.shoot));
             }
         }
 
@@ -53,6 +70,7 @@ namespace Game.Player {
         }
         public void Destroy()
         {
+            GameManager.instance.getSoundManager().PlaySFX((GameManager.instance.getSoundManager().getSfx(Manager.SoundManager.Sfx.explosion)));
             gameObject.SetActive(false);
         }
 
