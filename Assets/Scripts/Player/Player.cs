@@ -12,16 +12,22 @@ namespace Game.Player
 {
     [RequireComponent(typeof(BoxCollider2D))]
     [RequireComponent(typeof(SoundPlayer))]
-    public class Player : MonoBehaviour, IDamagable {
+    public class Player : MonoBehaviour, IDamagable, IReset {
         public float speed;
         SystemCalculations calcs;
         SoundPlayer sfxPlayer;
         Vector2 startPos;
+        bool alive = true;
+        Sprite shipSprite;
+        public Sprite destroyedSprite;
+        SpriteRenderer spr;
 
 		void Start () {
             calcs = new SystemCalculations();
             sfxPlayer = GetComponent<SoundPlayer>();
             startPos = transform.position;
+            spr = GetComponent<SpriteRenderer>();
+            shipSprite = spr.sprite;
 		}
 
         private void Update()
@@ -31,10 +37,12 @@ namespace Game.Player
                 Shoot();
         }
 
-        public void Revive()
+        public void Respawn()
         {
             transform.position = startPos;
             gameObject.SetActive(true);
+            alive = true;
+            spr.sprite = shipSprite;
         }
 
         void Shoot()
@@ -51,7 +59,7 @@ namespace Game.Player
         private void InputHandler()
         {
             Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
-
+            if(alive)
             Movement(directionalInput);
         }
 
@@ -71,7 +79,15 @@ namespace Game.Player
         public void Destroy()
         {
             GameManager.instance.getSoundManager().PlaySFX((GameManager.instance.getSoundManager().getSfx(Manager.SoundManager.Sfx.explosion)));
-            gameObject.SetActive(false);
+            StartCoroutine(DestroyAnim());
+        }
+
+        IEnumerator DestroyAnim()
+        {
+            spr.sprite = destroyedSprite;
+            yield return new WaitForSeconds(0.4f);
+            //gameObject.SetActive(false);
+            Respawn();
         }
 
         public void ReceiveDamage()

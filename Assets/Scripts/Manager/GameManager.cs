@@ -12,12 +12,23 @@ namespace Game.Manager
         PoolManager pool;
         SoundManager sound;
         public static GameManager instance;
+        public UIManager uiManager;
+        public GameObject[] iReset;
 
         private void Awake()
         {
             instance = this;
             pool = GetComponent<PoolManager>();
             sound = GetComponent<SoundManager>();
+        }
+
+        void ResetGame()
+        {
+            foreach(GameObject res in iReset)
+            {
+                res.GetComponent<Game.Interface.IReset>().Respawn();
+            }
+            uiManager.Respawn();
         }
 
         public GameObject returnPooledObject(string pooledObj)

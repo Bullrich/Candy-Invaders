@@ -129,7 +129,6 @@ MonoBehaviour:
   height: 6
   width: 17
   distanceBetween: 0.9
-  elPos: 3
   MovementPause: 0.9
   PercentageToMove: 1
 --- !u!4 &129927255
@@ -408,6 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  destroyedSprite: {fileID: 21300032, guid: 464dc97aa616a834bb7717dff7f8342f, type: 3}
 --- !u!61 &645910516
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -561,6 +561,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06565b4adbeb1874f811010a8de01886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &795042144 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1677890057941646, guid: 4d0283bee60d726479729ef9967271fe,
+    type: 2}
+  m_PrefabInternal: {fileID: 472016459}
 --- !u!1001 &956928335
 Prefab:
   m_ObjectHideFlags: 0
@@ -646,6 +651,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a8bc608115a2040af12fbc7933b580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iReset:
+  - {fileID: 129927253}
+  - {fileID: 645910514}
+  - {fileID: 1517845136}
+  - {fileID: 795042144}
+  - {fileID: 1273371798}
+  - {fileID: 1769634314}
 --- !u!4 &985529653
 Transform:
   m_ObjectHideFlags: 0
@@ -834,6 +846,21 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4d0283bee60d726479729ef9967271fe, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1273371798 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1677890057941646, guid: 4d0283bee60d726479729ef9967271fe,
+    type: 2}
+  m_PrefabInternal: {fileID: 1211423020}
+--- !u!1 &1517845136 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1677890057941646, guid: 4d0283bee60d726479729ef9967271fe,
+    type: 2}
+  m_PrefabInternal: {fileID: 956928335}
+--- !u!1 &1769634314 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1677890057941646, guid: 4d0283bee60d726479729ef9967271fe,
+    type: 2}
+  m_PrefabInternal: {fileID: 460727819}
 --- !u!4 &1927928106 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4560370243502214, guid: 4d0283bee60d726479729ef9967271fe,

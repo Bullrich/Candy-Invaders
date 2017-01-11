@@ -5,16 +5,17 @@ using Game.Enemies;
 using Game.Manager;
 using Game.Systems;
 using Game.Sfx;
+using Game.Interface;
 //By @JavierBullrich
 
 namespace Game.Grid {
-	public class GridSystem : MonoBehaviour {
+    [RequireComponent(typeof(SoundPlayer))]
+	public class GridSystem : MonoBehaviour, IReset {
         public Invader invader;
         public int height, width;
         [Range(0.7f, 2)]
         public float distanceBetween = 0.9f;
         public IGridElement[,] elements;
-        public ElementPosition elPos;
         public float MovementPause;
         float movementTime = .1f;
         public int PercentageToMove;
@@ -23,6 +24,7 @@ namespace Game.Grid {
         SystemCalculations calcs;
         int moves;
         SoundPlayer sfxPlayer;
+        Vector2 startPos;
 
 		void Start () {
             elements = new IGridElement[height, width];
@@ -30,6 +32,13 @@ namespace Game.Grid {
             sfxPlayer = GetComponent<SoundPlayer>();
             PopulateGrid();
 		}
+
+        public void Respawn()
+        {
+            Destroy(gridContainer);
+            System.GC.Collect();
+            PopulateGrid();
+        }
 
         private void PopulateGrid()
         {
@@ -143,24 +152,10 @@ namespace Game.Grid {
             }
             return false;
         }
-        IGridElement element;
+
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.H))
-                print(getBorderElement(elPos).getPosition() + " " + getBorderElement(elPos).getGameobject());
-            else if (Input.GetKeyDown(KeyCode.G))
-                calcs.FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(elPos).getPosition()).x, Screen.width);
-            else if (Input.GetKeyDown(KeyCode.J))
-                print(calcs.PercentageToFloat(PercentageToMove, Screen.width));
-            else if (Input.GetKeyDown(KeyCode.Y))
-            {
-                if (element != null)
-                    element.getGameobject().SetActive(false);
-                element = GetRandomLastElement();
-                element.getGameobject().GetComponent<SpriteRenderer>().color = Color.white;
-            }
-
-                MoveGrid();
+            MoveGrid();
         }
 
         private IGridElement getBorderElement(ElementPosition pos)

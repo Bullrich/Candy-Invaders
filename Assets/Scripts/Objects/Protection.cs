@@ -6,12 +6,12 @@ using System;
 //By @JavierBullrich
 
 namespace Game.Obj {
-	public class Protection : MonoBehaviour, IDamagable {
+	public class Protection : MonoBehaviour, IDamagable, IReset {
         [SerializeField]
         public Animation.AnimationSystem anim;
         int life = 5;
 
-        public void ResetElement()
+        public void Respawn()
         {
             gameObject.SetActive(true);
             life = 4;
@@ -32,7 +32,7 @@ namespace Game.Obj {
 
         void Start () {
             anim.SetUp(GetComponent<SpriteRenderer>());
-            ResetElement();
+            Respawn();
 		}
     }
 }
