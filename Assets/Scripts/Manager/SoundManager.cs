@@ -28,8 +28,11 @@ namespace Game.Manager
 
         public void PlaySFX(AudioClip sfx)
         {
-            aSource.clip = sfx;
-            aSource.Play();
+            if (Game.Sfx.SoundPlayer.canPlay)
+            {
+                aSource.clip = sfx;
+                aSource.Play();
+            }
         }
 
         public AudioClip getSfx(Sfx option)

@@ -70,7 +70,7 @@ MonoBehaviour:
   speed: 4
   collisionMasks:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   moveDirection: 1
 --- !u!212 &212203122144943452
 SpriteRenderer:

@@ -8,15 +8,30 @@ using Game.Interface;
 namespace Game.Manager {
 	public class UIManager : MonoBehaviour, IReset {
         public Text scoreTxt;
+        public GameObject[] lifesSprites;
 
         public void UpdateScore(int newScore)
         {
             scoreTxt.text = newScore + "";
         }
 
+        public void LostALife()
+        {
+            foreach(GameObject go in lifesSprites)
+            {
+                if (go.activeInHierarchy)
+                {
+                    go.SetActive(false);
+                    break;
+                }
+            }
+        }
+
         public void Respawn()
         {
-
+            foreach (GameObject go in lifesSprites)
+                go.SetActive(true);
+            scoreTxt.text = 0 + "";
         }
 	}
 }

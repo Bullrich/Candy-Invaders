@@ -13,7 +13,9 @@ namespace Game.Manager
         SoundManager sound;
         public static GameManager instance;
         public UIManager uiManager;
+        public Player.Player player;
         public GameObject[] iReset;
+        int score, lifes = 4;
 
         private void Awake()
         {
@@ -31,6 +33,7 @@ namespace Game.Manager
             uiManager.Respawn();
         }
 
+        #region Getters
         public GameObject returnPooledObject(string pooledObj)
         {
             return pool.GetPooledObject(pooledObj);
@@ -39,10 +42,40 @@ namespace Game.Manager
         {
             return pool.GetPooledObject(pooledObj);
         }
-
         public SoundManager getSoundManager()
         {
             return sound;
+        }
+        #endregion
+
+        #region Setters
+        public void AddScore(int newScore)
+        {
+            score += newScore;
+            uiManager.UpdateScore(score);
+        }
+        #endregion
+
+        public void PlayerDestroyed()
+        {
+            lifes--;
+            if (lifes > 0)
+            {
+                player.Respawn();
+                uiManager.LostALife();
+            }
+            else
+            {
+                ResetGame();
+                score = 0;
+                uiManager.UpdateScore(score);
+            }
+        }
+
+        public void LevelCompleted()
+        {
+            ResetGame();
+            uiManager.UpdateScore(score);
         }
 
         private void Update()

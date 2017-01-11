@@ -7,6 +7,7 @@ namespace Game.Sfx {
     [RequireComponent(typeof(AudioSource))]
 	public class SoundPlayer : MonoBehaviour {
         AudioSource audioSource;
+        public static bool canPlay = true;
 
 		void Start () {
             audioSource = GetComponent<AudioSource>();
@@ -15,8 +16,11 @@ namespace Game.Sfx {
 
         public void PlaySFX(AudioClip sfx)
         {
-            audioSource.clip = sfx;
-            audioSource.Play();
+            if (canPlay)
+            {
+                audioSource.clip = sfx;
+                audioSource.Play();
+            }
         }
 
         public void ChangePitch(float pitch)

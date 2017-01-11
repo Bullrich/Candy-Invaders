@@ -17,7 +17,7 @@ namespace Game.Grid {
         public float distanceBetween = 0.9f;
         public IGridElement[,] elements;
         public float MovementPause;
-        float movementTime = .1f;
+        float originalMovementPause, movementTime = .1f;
         public int PercentageToMove;
         GameObject gridContainer;
         bool goingRight = true;
@@ -30,6 +30,7 @@ namespace Game.Grid {
             elements = new IGridElement[height, width];
             calcs = new SystemCalculations();
             sfxPlayer = GetComponent<SoundPlayer>();
+            originalMovementPause = MovementPause;
             PopulateGrid();
 		}
 
@@ -37,12 +38,12 @@ namespace Game.Grid {
         {
             Destroy(gridContainer);
             System.GC.Collect();
+            MovementPause = originalMovementPause;
             PopulateGrid();
         }
 
         private void PopulateGrid()
         {
-            //float distance = (invader.getSpriteWidth() / 50);
             Vector2 spawnPos = transform.position;
             gridContainer = new GameObject();
             gridContainer.transform.position = Vector3.zero;
@@ -98,28 +99,33 @@ namespace Game.Grid {
                     if (!active)
                     {
                         Debug.Log("There are no more active elements in the grid");
-                        break;
+                        GameManager.instance.LevelCompleted();
+                        return null;
                     }
                 }
             }
             return elem;
         }
 
-        public void DestroyShip(IGridElement el)
+        /// <summary>Returns the score from the destruction of a ship</summary>
+        public int DestroyShip(IGridElement el)
         {
             int[] shipCords = GetCords(el);
             int colorType = el.getColorType();
-            int comboMultiplier = 0, lastCombo = 1;
+            int comboMultiplier = 1, lastCombo = 1;
 
             foreach(IGridElement elem in getAdjacentElements(shipCords[0], shipCords[1]))
             {
                 if (elem != null && elem.getColorType() == colorType && elem.getGameobject().activeInHierarchy)
+                {
                     elem.ChainDestroy();
 
-                int temp = comboMultiplier;
-                comboMultiplier = lastCombo;
-                lastCombo = temp + lastCombo;
+                    int temp = comboMultiplier;
+                    comboMultiplier = lastCombo;
+                    lastCombo = temp + lastCombo;
+                }
             }
+            return 10 * lastCombo;
         }
 
         private IGridElement[] getAdjacentElements(int shipY, int shipX)
@@ -160,7 +166,7 @@ namespace Game.Grid {
 
         private IGridElement getBorderElement(ElementPosition pos)
         {
-            int[] deepValue = new int[2];
+            int[] deepValue = new int[2] { 0, 0 };
             if (pos == ElementPosition.Left || pos == ElementPosition.Top)
                 deepValue = (pos == ElementPosition.Top ? new int[2] { height, 0 } : new int[2] { 0, width });
             for (int i = 0; i < height; i++)
@@ -195,6 +201,10 @@ namespace Game.Grid {
                 }
                 
             }
+
+            if (deepValue[0] >= elements.GetLength(0) || deepValue[1] >= elements.GetLength(1))
+                deepValue = new int[2] { 0, 0 };
+
             print("[" + deepValue[0] + ", " + deepValue[1] + ']');
             return elements[deepValue[0], deepValue[1]];
         }
@@ -205,6 +215,7 @@ namespace Game.Grid {
             {
                 movementTime = 0;
                 Vector3 vectorMovement;
+
                 if (goingRight && calcs.FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Right).getPosition()).x, Screen.width) < 97)
                     vectorMovement = new Vector3(calcs.PercentageToFloat(PercentageToMove, Screen.width), 0);
                 else if (!goingRight && calcs.FloatToPercentage(Camera.main.WorldToScreenPoint(getBorderElement(ElementPosition.Left).getPosition()).x, Screen.width) > 3)
@@ -240,8 +251,12 @@ namespace Game.Grid {
                 GameObject bullet = GameManager.instance.returnPooledObject("EnemyBullet");
                 if (bullet != null)
                 {
-                    bullet.transform.position = GetRandomLastElement().getPosition();
-                    bullet.SetActive(true);
+                    IGridElement spawner = GetRandomLastElement();
+                    if (spawner != null)
+                    {
+                        bullet.transform.position = spawner.getPosition();
+                        bullet.SetActive(true);
+                    }
                 }
             }
             else

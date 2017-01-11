@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114589705986274176}
   - component: {fileID: 61406732742768022}
   m_Layer: 0
-  m_Name: PlayerBullet
+  m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
   speed: 10
   collisionMasks:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   moveDirection: 0
 --- !u!212 &212265522090276980
 SpriteRenderer:

@@ -33,7 +33,7 @@ namespace Game.Player
         private void Update()
         {
             InputHandler();
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetButtonDown("Fire"))
                 Shoot();
         }
 
@@ -85,9 +85,10 @@ namespace Game.Player
         IEnumerator DestroyAnim()
         {
             spr.sprite = destroyedSprite;
+            Camera.main.GetComponent<GameCamera.CameraShake>().shakeDuration = 0.4f;
             yield return new WaitForSeconds(0.4f);
             //gameObject.SetActive(false);
-            Respawn();
+            GameManager.instance.PlayerDestroyed();
         }
 
         public void ReceiveDamage()
