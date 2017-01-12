@@ -340,6 +340,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 270068754}
     m_Modifications:
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 22499942, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -418,8 +422,49 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22462294, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -4.961217
+      value: -0.08329773
       objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].buttonText
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].buttonType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].buttonColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].buttonColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].buttonColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].buttonColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[2].custom
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[1].buttonText
+      value: 'SOUND: ON'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[1].buttonType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11465690, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
+      propertyPath: buttons.Array.data[1].custom
+      value: 
+      objectReference: {fileID: 114741933279440388, guid: 5f18280593456e3498f4ddafaef6cdda,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b22a7c23914360f47bc619f3987d5642, type: 2}
   m_IsPrefabParent: 0
