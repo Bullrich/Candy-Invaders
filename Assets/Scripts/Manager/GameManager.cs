@@ -15,7 +15,7 @@ namespace Game.Manager
         public UIManager uiManager;
         public Player.Player player;
         public GameObject[] iReset;
-        int score, lifes = 4;
+        int score, lifes = 3;
 
         private void Awake()
         {
@@ -69,6 +69,7 @@ namespace Game.Manager
                 ResetGame();
                 score = 0;
                 uiManager.UpdateScore(score);
+                lifes = 3;
             }
         }
 
