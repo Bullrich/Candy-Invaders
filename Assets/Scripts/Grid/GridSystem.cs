@@ -39,7 +39,20 @@ namespace Game.Grid {
             Destroy(gridContainer);
             System.GC.Collect();
             MovementPause = originalMovementPause;
+            goingRight = true;
             PopulateGrid();
+            sfxPlayer.ChangePitch(1);
+        }
+
+        int AmountOfElementsActive()
+        {
+            int activeElements = 0;
+            foreach(IGridElement el in elements)
+            {
+                if (el.isActive())
+                    activeElements++;
+            }
+            return activeElements;
         }
 
         private void PopulateGrid()
@@ -125,6 +138,8 @@ namespace Game.Grid {
                     lastCombo = temp + lastCombo;
                 }
             }
+            SpeedUp();
+
             return 10 * lastCombo;
         }
 
@@ -224,8 +239,7 @@ namespace Game.Grid {
                 {
                     vectorMovement = new Vector3(0, -(calcs.PercentageToFloat(PercentageToMove, Screen.width)));
                     goingRight = !goingRight;
-                    MovementPause -= (MovementPause / 10);
-                    sfxPlayer.ChangePitch(sfxPlayer.getPitch() + .1f);
+                    //SpeedUp();
                 }
 
                 gridContainer.transform.position = Camera.main.ScreenToWorldPoint(
@@ -241,6 +255,13 @@ namespace Game.Grid {
             }
             else
                 movementTime += GameManager.DeltaTime;
+        }
+
+        private void SpeedUp()
+        {
+            //MovementPause -= (MovementPause / 10);
+            MovementPause = calcs.PercentageToFloat(calcs.FloatToPercentage(AmountOfElementsActive(), elements.Length), originalMovementPause);
+            sfxPlayer.ChangePitch(1 + (1 - calcs.PercentageToFloat(calcs.FloatToPercentage(AmountOfElementsActive(), elements.Length), 1)));
         }
 
         void FireToPlayer()
