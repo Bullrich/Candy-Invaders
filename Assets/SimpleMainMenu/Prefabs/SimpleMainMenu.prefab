@@ -251,54 +251,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834858c25606858468d5be8ce8ff2162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameName: 44656d6f204d656e75
-  CopyrightText: 426c756520537175617265204d6f6e73746572
-  textColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  GameName: Candy Invaders
+  CopyrightText: Javier Bullrich
+  textColor: {r: 1, g: 1, b: 1, a: 1}
   textFont: {fileID: 12800000, guid: 336de33230b10dc42b190ff31a0dac60, type: 3}
-  InputName: 4669726531
-  VerticalAxisName: 566572746963616c
-  ReturnKey: 4669726533
+  InputName: Fire
+  VerticalAxisName: Vertical
+  ReturnKey: Cancel
   ArrowSprite: {fileID: 21300000, guid: 78bfab417c108b34b947d72a595a35da, type: 3}
-  SelectedColor:
-    r: 1
-    g: 0.92156863
-    b: 0.015686275
-    a: 1
+  SelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   canBeClicked: 0
   buttons:
-  - buttonText: 5374617274
+  - buttonText: Play
     buttonType: 0
-    levelName: 44656d6f47616d65
-    buttonColor:
-      r: 1
-      g: 1
-      b: 1
-      a: 1
-    selectedColor:
-      r: 0
-      g: 0
-      b: 0
-      a: 0
+    levelName: asteroidMain
+    buttonColor: {r: 1, g: 1, b: 1, a: 1}
+    selectedColor: {r: 0, g: 0, b: 0, a: 0}
     selectedSprite: {fileID: 0}
     canClick: 0
     textFont: {fileID: 0}
-  - buttonText: 51756974
+  - buttonText: Quit
     buttonType: 2
     levelName: 
-    buttonColor:
-      r: 1
-      g: 1
-      b: 1
-      a: 1
-    selectedColor:
-      r: 0
-      g: 0
-      b: 0
-      a: 0
+    buttonColor: {r: 1, g: 1, b: 1, a: 1}
+    selectedColor: {r: 0, g: 0, b: 0, a: 0}
     selectedSprite: {fileID: 0}
     canClick: 0
     textFont: {fileID: 0}

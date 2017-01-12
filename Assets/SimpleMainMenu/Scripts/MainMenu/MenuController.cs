@@ -9,7 +9,6 @@ namespace SimpleMainMenu
         bool inputDown, inputUp;
         List<MenuOptions> buttons;
         int currentOption;
-        string verticalAxis = "Vertical", selection = "Fire1";
         public MenuOptions optionPrefab;
         Transform optionsTransform;
 
@@ -56,22 +55,22 @@ namespace SimpleMainMenu
 
         void SelectionManager()
         {
-            if (Input.GetAxisRaw(verticalAxis) > -0.2f && inputDown)
+            if (Input.GetAxisRaw(SimpleMenuManager.vAxis) > -0.2f && inputDown)
                 inputDown = false;
-            else if (Input.GetAxisRaw(verticalAxis) < -0.9f && !inputDown)
+            else if (Input.GetAxisRaw(SimpleMenuManager.vAxis) < -0.9f && !inputDown)
             {
                 inputDown = true;
                 MoveOption(1);
             }
-            else if (Input.GetAxisRaw(verticalAxis) < 0.2f && inputUp)
+            else if (Input.GetAxisRaw(SimpleMenuManager.vAxis) < 0.2f && inputUp)
                 inputUp = false;
-            else if (Input.GetAxisRaw(verticalAxis) > 0.9f && !inputUp)
+            else if (Input.GetAxisRaw(SimpleMenuManager.vAxis) > 0.9f && !inputUp)
             {
                 inputUp = true;
                 MoveOption(-1);
             }
 
-            if (Input.GetButtonDown(selection))
+            if (Input.GetButtonDown(SimpleMenuManager.inputKey))
                 buttons[currentOption].ExecuteButton();
         }
 

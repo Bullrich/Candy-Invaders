@@ -33,6 +33,10 @@ namespace SimpleMainMenu
                     getOptionButton().onClick.AddListener(delegate () { settings.QuitGame(); });
                     break;
                 case ButtonsSettings.ButtonType.Custom:
+                    System.Type component = settings.custom.GetType();
+                    gameObject.AddComponent(component);
+                    settings.custom.GiveText(GetComponent<Text>());
+                    getOptionButton().onClick.AddListener(delegate () { settings.custom.OnClickAction(); });
                     break;
                 default:
                     break;

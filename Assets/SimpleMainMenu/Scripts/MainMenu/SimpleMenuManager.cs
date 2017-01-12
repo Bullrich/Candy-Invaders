@@ -39,7 +39,7 @@ namespace SimpleMainMenu
             mController.PopulateMenu(buttons);
             inputKey = InputName;
             vAxis = VerticalAxisName;
-            IntroStatus(true);
+            IntroStatus(false);
         }
 
         public void IntroStatus(bool activeIntro)

@@ -21,6 +21,8 @@ namespace SimpleMainMenu
 
         public string levelName;
 
+        public CustomButton custom;
+
         public Color buttonColor = Color.white;
         [HideInInspector]
         public Color selectedColor;
