@@ -51,7 +51,6 @@ namespace Game.Obj {
 
         public void CollisionDetection(GameObject hit)
         {
-            print(hit.name);
             hit.GetComponent<IDamagable>().ReceiveDamage();
             gameObject.SetActive(false);
         }

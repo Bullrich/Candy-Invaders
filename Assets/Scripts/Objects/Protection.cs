@@ -6,10 +6,12 @@ using System;
 //By @JavierBullrich
 
 namespace Game.Obj {
+    [RequireComponent(typeof(ProtectionController))]
 	public class Protection : MonoBehaviour, IDamagable, IReset {
         [SerializeField]
         public Animation.AnimationSystem anim;
         int life = 5;
+        ProtectionController protController;
 
         public void Respawn()
         {
@@ -30,8 +32,18 @@ namespace Game.Obj {
                 anim.ChangeSprite(life - 1);
         }
 
+        private void Update()
+        {
+            if (protController.HasCollided())
+            {
+                gameObject.SetActive(false);
+                Manager.GameManager.instance.getSoundManager().PlaySFX((Manager.GameManager.instance.getSoundManager().getSfx(Manager.SoundManager.Sfx.explosion)));
+            }
+        }
+
         void Start () {
             anim.SetUp(GetComponent<SpriteRenderer>());
+            protController = GetComponent<ProtectionController>();
             Respawn();
 		}
     }

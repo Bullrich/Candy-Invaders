@@ -179,6 +179,11 @@ namespace Game.Grid {
             MoveGrid();
         }
 
+        Vector2 getLowestShipPosition()
+        {
+            return getBorderElement(ElementPosition.Bottom).getPosition();
+        }
+
         private IGridElement getBorderElement(ElementPosition pos)
         {
             int[] deepValue = new int[2] { 0, 0 };
@@ -239,7 +244,9 @@ namespace Game.Grid {
                 {
                     vectorMovement = new Vector3(0, -(calcs.PercentageToFloat(PercentageToMove, Screen.width)));
                     goingRight = !goingRight;
-                    //SpeedUp();
+                    if (getLowestShipPosition().y < GameManager.instance.getPlayer().transform.position.y)
+                        GameManager.instance.ShipFinishedGame();
+                    //else if((getLowestShipPosition().y < GameManager.instance.getProtectionPosition().y))
                 }
 
                 gridContainer.transform.position = Camera.main.ScreenToWorldPoint(

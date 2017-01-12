@@ -12,9 +12,11 @@ namespace Game.Manager
         PoolManager pool;
         SoundManager sound;
         public static GameManager instance;
+        [Header("Elements in the game")]
         public UIManager uiManager;
         public Player.Player player;
-        public GameObject[] iReset;
+        public Grid.GridSystem grid;
+        public Obj.ProtectionContainer protection;
         int score, lifes = 3;
 
         private void Awake()
@@ -26,11 +28,15 @@ namespace Game.Manager
 
         void ResetGame()
         {
-            foreach(GameObject res in iReset)
-            {
-                res.GetComponent<Game.Interface.IReset>().Respawn();
-            }
-            uiManager.Respawn();
+            ResetItem(player);
+            ResetItem(grid);
+            ResetItem(protection);
+            ResetItem(uiManager);
+        }
+        
+        void ResetItem(Interface.IReset resetItem)
+        {
+            resetItem.Respawn();
         }
 
         #region Getters
@@ -45,6 +51,10 @@ namespace Game.Manager
         public SoundManager getSoundManager()
         {
             return sound;
+        }
+        public Player.Player getPlayer()
+        {
+            return player;
         }
         #endregion
 
@@ -66,11 +76,21 @@ namespace Game.Manager
             }
             else
             {
-                ResetGame();
-                score = 0;
-                uiManager.UpdateScore(score);
-                lifes = 3;
+                EndGame();
             }
+        }
+
+        void EndGame()
+        {
+            ResetGame();
+            score = 0;
+            uiManager.UpdateScore(score);
+            lifes = 3;
+        }
+
+        public void ShipFinishedGame()
+        {
+            EndGame();
         }
 
         public void LevelCompleted()

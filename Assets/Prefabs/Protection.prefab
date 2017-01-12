@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4560370243502214}
   - component: {fileID: 212502498252328964}
-  - component: {fileID: 114427482524521226}
   - component: {fileID: 61031884033641600}
+  - component: {fileID: 114277248640437448}
+  - component: {fileID: 114427482524521226}
   m_Layer: 10
   m_Name: Protection
   m_TagString: Untagged
@@ -56,6 +57,25 @@ BoxCollider2D:
   m_Offset: {x: -0.0022444725, y: -0.058358192}
   serializedVersion: 2
   m_Size: {x: 0.5367506, y: 0.21802568}
+--- !u!114 &114277248640437448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1677890057941646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ed983d80ff11144b6ec866e1d20936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 256
+  horizontalRayCount: 0
+  verticalRayCount: 0
+  horizontalRaySpacing: 0
+  verticalRaySpacing: 0
+  collider: {fileID: 0}
 --- !u!114 &114427482524521226
 MonoBehaviour:
   m_ObjectHideFlags: 1
