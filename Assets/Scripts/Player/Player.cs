@@ -33,7 +33,7 @@ namespace Game.Player
         private void Update()
         {
             InputHandler();
-            if (Input.GetButtonDown("Fire"))
+            if (Input.GetButtonDown("Fire") && alive)
                 Shoot();
         }
 
@@ -78,6 +78,7 @@ namespace Game.Player
         }
         public void Destroy()
         {
+            alive = false;
             GameManager.instance.getSoundManager().PlaySFX((GameManager.instance.getSoundManager().getSfx(Manager.SoundManager.Sfx.explosion)));
             StartCoroutine(DestroyAnim());
         }

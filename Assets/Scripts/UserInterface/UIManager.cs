@@ -9,6 +9,7 @@ namespace Game.Manager {
 	public class UIManager : MonoBehaviour, IReset {
         public Text scoreTxt;
         public GameObject[] lifesSprites;
+        public Text GameOver;
 
         public void UpdateScore(int newScore)
         {
@@ -27,11 +28,17 @@ namespace Game.Manager {
             }
         }
 
+        public void ShowEndText()
+        {
+            GameOver.gameObject.SetActive(true);
+        }
+
         public void Respawn()
         {
             foreach (GameObject go in lifesSprites)
                 go.SetActive(true);
             scoreTxt.text = 0 + "";
+            GameOver.gameObject.SetActive(false);
         }
 	}
 }

@@ -18,6 +18,7 @@ namespace Game.Manager
         public Grid.GridSystem grid;
         public Obj.ProtectionContainer protection;
         int score, lifes = 3;
+        bool gamePaused;
 
         private void Awake()
         {
@@ -33,6 +34,8 @@ namespace Game.Manager
             ResetItem(protection);
             ResetItem(uiManager);
             ResetItem(pool);
+            gamePaused = false;
+            uiManager.UpdateScore(score);
         }
         
         void ResetItem(Interface.IReset resetItem)
@@ -83,10 +86,12 @@ namespace Game.Manager
 
         void EndGame()
         {
-            ResetGame();
             score = 0;
-            uiManager.UpdateScore(score);
             lifes = 3;
+            uiManager.ShowEndText();
+            gamePaused = true;
+
+            Invoke("ResetGame", 3f);
         }
 
         public void ShipFinishedGame()
@@ -102,7 +107,10 @@ namespace Game.Manager
 
         private void Update()
         {
-            DeltaTime = Time.deltaTime;
+            if (!gamePaused)
+                DeltaTime = Time.deltaTime;
+            else
+                DeltaTime = 0;
         }
     }
 }

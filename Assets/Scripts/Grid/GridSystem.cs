@@ -300,15 +300,18 @@ namespace Game.Grid {
         {
             Vector3 spawnPos = transform.position;
             float size = .3f;
-            for (int i = 0; i < height; i++)
+            if (!Application.isPlaying)
             {
-                for (int j = 0; j < width; j++)
+                for (int i = 0; i < height; i++)
                 {
-                    Vector3 spawnPosition = spawnPos + new Vector3(distanceBetween * j, 0);
-                    Gizmos.DrawLine(spawnPosition - Vector3.up * size, spawnPosition + Vector3.up * size);
-                    Gizmos.DrawLine(spawnPosition - Vector3.left * size, spawnPosition + Vector3.left * size);
+                    for (int j = 0; j < width; j++)
+                    {
+                        Vector3 spawnPosition = spawnPos + new Vector3(distanceBetween * j, 0);
+                        Gizmos.DrawLine(spawnPosition - Vector3.up * size, spawnPosition + Vector3.up * size);
+                        Gizmos.DrawLine(spawnPosition - Vector3.left * size, spawnPosition + Vector3.left * size);
+                    }
+                    spawnPos.y -= distanceBetween;
                 }
-                spawnPos.y -= distanceBetween;
             }
         }
     }
