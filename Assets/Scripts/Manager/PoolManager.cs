@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Interface;
+using System;
 //By @JavierBullrich
 namespace Game.Manager {
-    public class PoolManager : MonoBehaviour {
+    public class PoolManager : MonoBehaviour, IReset {
         [SerializeField]
         public PoolValues[] Pool;
         GameObject[] poolContainer;
@@ -22,6 +24,17 @@ namespace Game.Manager {
             for (int i = 0; i < Pool.Length; i++)
             {
                 CreatePool(i);
+            }
+        }
+
+        public void Respawn()
+        {
+            for (int i = 0; i < Pool.Length; i++)
+            {
+                foreach (GameObject obj in pooledObjects[i])
+                {
+                    obj.SetActive(false);
+                }
             }
         }
 

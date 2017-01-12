@@ -32,6 +32,7 @@ namespace Game.Manager
             ResetItem(grid);
             ResetItem(protection);
             ResetItem(uiManager);
+            ResetItem(pool);
         }
         
         void ResetItem(Interface.IReset resetItem)
